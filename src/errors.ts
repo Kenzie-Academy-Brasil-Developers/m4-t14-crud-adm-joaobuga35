@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 
-export class appError extends Error {
+export class AppError extends Error {
   message: string;
   statusCode: number;
 
-  constructor(message: string, statusCode: number) {
+  constructor(message: string, statusCode: number = 400) {
     super(), (this.message = message), (this.statusCode = statusCode);
   }
 }
@@ -15,7 +15,7 @@ export const handleError = (
   resp: Response,
   next: NextFunction
 ) => {
-  if (error instanceof appError) {
+  if (error instanceof AppError) {
     return resp.status(error.statusCode).json({
       message: error.message,
     });
