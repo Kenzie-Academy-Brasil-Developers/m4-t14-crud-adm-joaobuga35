@@ -5,10 +5,12 @@ import {
   userResult,
 } from "../interfaces/users.interface";
 import { client } from "../database";
+import { createUserSchema } from "../schemas/users.schemas";
 
 export const userCreateService = async (
   payload: iUserRequest
 ): Promise<userResponse> => {
+  const validatedUserData = createUserSchema.parse(payload);
   const queryTemplate: string = format(
     `
         INSERT INTO 
@@ -16,8 +18,8 @@ export const userCreateService = async (
         VALUES (%L)
         RETURNING*;
     `,
-    Object.keys(payload),
-    Object.values(payload)
+    Object.keys(validatedUserData),
+    Object.values(validatedUserData)
   );
 
   const queryResult: userResult = await client.query(queryTemplate);
