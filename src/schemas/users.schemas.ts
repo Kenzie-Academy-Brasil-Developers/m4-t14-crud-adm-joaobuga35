@@ -4,6 +4,14 @@ export const createUserSchema = z.object({
   name: z.string().min(3).max(20),
   email: z.string().email(),
   password: z.string(),
-  admin: z.boolean(),
+  admin: z.boolean().optional().default(false),
   isActive: z.boolean(),
+});
+
+export const returnUserSchema = createUserSchema.extend({
+  id: z.number(),
+});
+
+export const returnWithoutPassword = returnUserSchema.omit({
+  password: true,
 });

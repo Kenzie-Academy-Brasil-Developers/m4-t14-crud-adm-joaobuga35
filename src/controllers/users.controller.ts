@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { iUserRequest, userResponse } from "../interfaces/users.interface";
+import { iUserRequest, iUserResponse } from "../interfaces/users.interface";
 import { userCreateService } from "../services/createUserService";
 
 export const createUserController = async (
@@ -8,7 +8,7 @@ export const createUserController = async (
 ): Promise<Response> => {
   const userBody: iUserRequest = req.body;
 
-  const newUser: userResponse = await userCreateService(userBody);
+  const newUser: iUserResponse = await userCreateService(userBody);
 
   return resp.status(201).json(newUser);
 };

@@ -1,16 +1,18 @@
 import format from "pg-format";
 import {
   iUserRequest,
-  userResponse,
+  iUserResponse,
   userResult,
 } from "../interfaces/users.interface";
 import { client } from "../database";
-import { createUserSchema } from "../schemas/users.schemas";
+import {
+  createUserSchema,
+  returnWithoutPassword,
+} from "../schemas/users.schemas";
 
 export const userCreateService = async (
   payload: iUserRequest
-): Promise<userResponse> => {
-  const validatedUserData = createUserSchema.parse(payload);
+): Promise<iUserResponse> => {
   const queryTemplate: string = format(
     `
         INSERT INTO 
@@ -18,11 +20,12 @@ export const userCreateService = async (
         VALUES (%L)
         RETURNING*;
     `,
-    Object.keys(validatedUserData),
-    Object.values(validatedUserData)
+    Object.keys(payload),
+    Object.values(payload)
   );
 
   const queryResult: userResult = await client.query(queryTemplate);
 
-  return queryResult.rows[0];
+  const newUser = returnWithoutPassword.parse(queryResult.rows[0]);
+  return newUser;
 };
