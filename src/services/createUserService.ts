@@ -5,10 +5,7 @@ import {
   userResult,
 } from "../interfaces/users.interface";
 import { client } from "../database";
-import {
-  createUserSchema,
-  returnWithoutPassword,
-} from "../schemas/users.schemas";
+import { returnWithoutPassword } from "../schemas/users.schemas";
 
 export const userCreateService = async (
   payload: iUserRequest
