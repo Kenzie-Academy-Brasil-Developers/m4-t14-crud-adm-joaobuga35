@@ -9,5 +9,7 @@ import {
 export type iUserRequest = z.infer<typeof createUserSchema>;
 export type iUserWithId = z.infer<typeof returnUserSchema>;
 
+export type userResultWithPassword = QueryResult<iUserWithId>;
+
 export type iUserResponse = z.infer<typeof returnWithoutPassword>;
 export type userResult = QueryResult<iUserResponse>;
