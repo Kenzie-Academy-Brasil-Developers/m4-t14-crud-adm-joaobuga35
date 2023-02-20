@@ -46,7 +46,7 @@ export const loginService = async (
     process.env.SECRET_KEY!,
     {
       expiresIn: "24h",
-      subject: String(queryResult.rows[0].id),
+      subject: queryResult.rows[0].id.toString(),
     }
   );
 

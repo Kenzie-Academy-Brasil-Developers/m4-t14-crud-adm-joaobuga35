@@ -1,7 +1,7 @@
 import format from "pg-format";
 import {
   iUserRequest,
-  iUserResponse,
+  iUserResponseWithoutPassword,
   userResult,
 } from "../../interfaces/users.interface";
 import { client } from "../../database";
@@ -9,7 +9,7 @@ import { returnWithoutPassword } from "../../schemas/users.schemas";
 
 export const userCreateService = async (
   payload: iUserRequest
-): Promise<iUserResponse> => {
+): Promise<iUserResponseWithoutPassword> => {
   const queryTemplate: string = format(
     `
         INSERT INTO 

@@ -1,6 +1,13 @@
 import { Request, Response } from "express";
-import { iUserRequest, iUserResponse } from "../interfaces/users.interface";
-import { userCreateService } from "../services/users/createUserService";
+import {
+  IListUsersWithoutPassword,
+  iUserRequest,
+  iUserResponseWithoutPassword,
+} from "../interfaces/users.interface";
+import { userCreateService } from "../services/users/createUser.service";
+import { listAllUsersService } from "../services/users/listUsers.service";
+import { listProfileService } from "../services/users/listProfile.service";
+import { editUserService } from "../services/users/editUser.service";
 
 export const createUserController = async (
   req: Request,
@@ -8,7 +15,40 @@ export const createUserController = async (
 ): Promise<Response> => {
   const userBody: iUserRequest = req.body;
 
-  const newUser: iUserResponse = await userCreateService(userBody);
+  const newUser: iUserResponseWithoutPassword = await userCreateService(
+    userBody
+  );
 
   return resp.status(201).json(newUser);
+};
+
+export const listAllUsers = async (
+  req: Request,
+  resp: Response
+): Promise<Response> => {
+  const users: IListUsersWithoutPassword = await listAllUsersService();
+
+  return resp.status(200).json(users);
+};
+
+export const listProfileUser = async (
+  req: Request,
+  resp: Response
+): Promise<Response> => {
+  const id: number = req.user.id;
+
+  const profile = await listProfileService(id);
+
+  return resp.status(200).json(profile);
+};
+
+export const editUser = async (
+  req: Request,
+  resp: Response
+): Promise<Response> => {
+  const id: number = Number(req.params.id);
+
+  const edit = await editUserService(req.body, id);
+
+  return resp.status(200).json(edit);
 };

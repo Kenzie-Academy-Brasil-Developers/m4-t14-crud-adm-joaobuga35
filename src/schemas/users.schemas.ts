@@ -10,11 +10,20 @@ export const createUserSchema = z.object({
   admin: z.boolean().optional().default(false),
 });
 
+export const editSchema = z.object({
+  name: z.string().min(3).max(20).optional(),
+  email: z.string().email().optional(),
+  admin: z.boolean().optional().default(false),
+  active: z.boolean().optional(),
+});
+
 export const returnUserSchema = createUserSchema.extend({
   id: z.number(),
-  isActive: z.boolean(),
+  active: z.boolean(),
 });
 
 export const returnWithoutPassword = returnUserSchema.omit({
   password: true,
 });
+
+export const listAllUsersWithoutPassword = z.array(returnWithoutPassword);

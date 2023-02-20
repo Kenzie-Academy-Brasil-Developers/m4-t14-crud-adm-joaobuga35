@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AppError } from "../errors";
 import jwt from "jsonwebtoken";
+import { number } from "zod";
 
 export const ensureTokenIsValid = async (
   req: Request,
@@ -10,7 +11,7 @@ export const ensureTokenIsValid = async (
   let token = req.headers.authorization;
 
   if (!token) {
-    throw new AppError("Token is missing.", 401);
+    throw new AppError("Missing Bearer Token.", 401);
   }
 
   token = token.split(" ")[1];
@@ -19,6 +20,11 @@ export const ensureTokenIsValid = async (
     if (error) {
       throw new AppError(error.message);
     }
+
+    req.user = {
+      id: parseInt(decoded.sub),
+      role: decoded.admin,
+    };
     return next();
   });
 };
