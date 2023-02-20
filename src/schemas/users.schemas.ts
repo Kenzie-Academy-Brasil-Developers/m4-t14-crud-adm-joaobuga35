@@ -13,8 +13,6 @@ export const createUserSchema = z.object({
 export const editSchema = z.object({
   name: z.string().min(3).max(20).optional(),
   email: z.string().email().optional(),
-  admin: z.boolean().optional().default(false),
-  active: z.boolean().optional(),
 });
 
 export const returnUserSchema = createUserSchema.extend({
