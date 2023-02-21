@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createUserController,
+  deleteUser,
   editUser,
   listAllUsers,
   listProfileUser,
@@ -29,3 +30,5 @@ userRoutes.patch(
   verifyEmailExists,
   editUser
 );
+userRoutes.delete("/:id", ensureTokenIsValid, ensureIDisValid, deleteUser);
+userRoutes.put("/:id/recover", ensureTokenIsValid, ensureIDisValid);
