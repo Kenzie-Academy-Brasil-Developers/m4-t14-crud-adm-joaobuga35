@@ -5,14 +5,19 @@ import {
   iUserResponseWithoutPassword,
   userResult,
 } from "../../interfaces/users.interface";
-import { editSchema, returnWithoutPassword } from "../../schemas/users.schemas";
+import { returnWithoutPassword } from "../../schemas/users.schemas";
 import { client } from "../../database";
-
+import { AppError } from "../../errors";
 export const editUserService = async (
   payload: iEditProfileUser,
-  id: number
+  userIdParam: number,
+  typeUser: boolean,
+  idProfile: number
 ): Promise<iUserResponseWithoutPassword> => {
-  const validatedData = editSchema.parse(payload);
+  if (userIdParam !== idProfile && typeUser === false) {
+    throw new AppError("Insufficient Permission", 403);
+  }
+
   const queryTemplate: string = format(
     `
             UPDATE
@@ -22,13 +27,13 @@ export const editUserService = async (
                 id = $1
             RETURNING *;
             `,
-    Object.keys(validatedData),
-    Object.values(validatedData)
+    Object.keys(payload),
+    Object.values(payload)
   );
 
   const queryConfig: QueryConfig = {
     text: queryTemplate,
-    values: [id],
+    values: [userIdParam],
   };
 
   const queryResult: userResult = await client.query(queryConfig);

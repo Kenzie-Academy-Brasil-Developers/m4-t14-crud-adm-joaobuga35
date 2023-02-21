@@ -1,7 +1,16 @@
 import { QueryConfig } from "pg";
 import { client } from "../../database";
+import { AppError } from "../../errors";
 
-export const deleteUserService = async (userId: number): Promise<void> => {
+export const deleteUserService = async (
+  userIdParam: number,
+  typeUser: boolean,
+  idProfile: number
+): Promise<void> => {
+  if (userIdParam !== idProfile && typeUser === false) {
+    throw new AppError("Insufficient Permission", 403);
+  }
+
   const queryTemplate: string = `
         UPDATE 
             users
@@ -13,7 +22,7 @@ export const deleteUserService = async (userId: number): Promise<void> => {
 
   const queryConfig: QueryConfig = {
     text: queryTemplate,
-    values: [userId],
+    values: [userIdParam],
   };
 
   await client.query(queryConfig);

@@ -9,6 +9,7 @@ import { listAllUsersService } from "../services/users/listUsers.service";
 import { listProfileService } from "../services/users/listProfile.service";
 import { editUserService } from "../services/users/editUser.service";
 import { deleteUserService } from "../services/users/deleteUser.service";
+import { reactiveUserService } from "../services/users/reactiveUser.service";
 
 export const createUserController = async (
   req: Request,
@@ -49,7 +50,7 @@ export const editUser = async (
 ): Promise<Response> => {
   const id: number = Number(req.params.id);
 
-  const edit = await editUserService(req.body, id);
+  const edit = await editUserService(req.body, id, req.user.role, req.user.id);
 
   return resp.status(200).json(edit);
 };
@@ -60,7 +61,8 @@ export const deleteUser = async (
 ): Promise<Response> => {
   const id: number = Number(req.params.id);
 
-  await deleteUserService(id);
+  await deleteUserService(id, req.user.role, req.user.id);
+
   return resp.status(204).json();
 };
 
@@ -68,5 +70,9 @@ export const reactiveUser = async (
   req: Request,
   resp: Response
 ): Promise<Response> => {
-  return resp.status(200).json();
+  const id: number = Number(req.params.id);
+
+  const responseUser = await reactiveUserService(id);
+
+  return resp.status(200).json(responseUser);
 };
