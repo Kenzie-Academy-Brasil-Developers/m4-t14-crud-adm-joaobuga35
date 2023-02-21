@@ -13,6 +13,7 @@ import { ensureTokenIsValid } from "../middlewares/ensureTokenIsValid.middleware
 import { ensureIDisValid } from "../middlewares/ensureIdIsValidated";
 import { createUserSchema, editSchema } from "../schemas/users.schemas";
 import { ensureADMisValid } from "../middlewares/ensureADMIsValid.middleware";
+import { ensureUserIsActive } from "../middlewares/ensureUserIsActive.middleware";
 
 export const userRoutes: Router = Router();
 
@@ -22,6 +23,7 @@ userRoutes.post(
   verifyEmailExists,
   createUserController
 );
+
 userRoutes.get("", ensureTokenIsValid, ensureADMisValid, listAllUsers);
 
 userRoutes.get("/profile", ensureTokenIsValid, listProfileUser);
@@ -41,5 +43,6 @@ userRoutes.put(
   ensureTokenIsValid,
   ensureIDisValid,
   ensureADMisValid,
+  ensureUserIsActive,
   reactiveUser
 );

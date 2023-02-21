@@ -8,6 +8,7 @@ import {
 import { returnWithoutPassword } from "../../schemas/users.schemas";
 import { client } from "../../database";
 import { AppError } from "../../errors";
+
 export const editUserService = async (
   payload: iEditProfileUser,
   userIdParam: number,

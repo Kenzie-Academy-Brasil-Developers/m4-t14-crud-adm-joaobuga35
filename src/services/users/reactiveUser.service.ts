@@ -5,6 +5,7 @@ import {
   userResult,
 } from "../../interfaces/users.interface";
 import { returnWithoutPassword } from "../../schemas/users.schemas";
+import { AppError } from "../../errors";
 
 export const reactiveUserService = async (
   userIdParam: number
